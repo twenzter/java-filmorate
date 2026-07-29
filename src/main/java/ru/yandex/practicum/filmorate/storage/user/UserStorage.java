@@ -7,9 +7,14 @@ import java.util.Set;
 
 public interface UserStorage {
     void clear();
+
     User get(Long id);
+
     boolean containsKey(Long id);
+
     void put(Long id,User user);
+
     Set<Long> keySet();
+
     Collection<User> values();
 }
