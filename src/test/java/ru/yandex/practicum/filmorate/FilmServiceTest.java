@@ -12,13 +12,16 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.*;
 
 public class FilmServiceTest {
     private final FilmStorage filmStorage = new InMemoryFilmStorage();
-    private final FilmService filmService = new FilmService(filmStorage, new UserService(new InMemoryUserStorage()));
+    private final UserStorage userStorage = new InMemoryUserStorage();
+    private final UserService userService =  new UserService(userStorage);
+    private final FilmService filmService = new FilmService(filmStorage, userService);
     private Film film;
     private User user;
 
@@ -32,10 +35,11 @@ public class FilmServiceTest {
         filmStorage.clear();
 
         user = new User();
-        user.setId(1L);
         user.setEmail("email@mail.ru");
         user.setLogin("login");
         user.setBirthday(LocalDate.of(1999,2,1));
+        userStorage.clear();
+        userService.create(user);
     }
 
     @Test
