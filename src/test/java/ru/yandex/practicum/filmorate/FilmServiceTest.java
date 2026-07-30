@@ -189,17 +189,17 @@ public class FilmServiceTest {
     }
 
     @Test
-    public void deleteLikeToFilmByIdAndUserId() {
+    public void deleteLikeFromFilmByIdAndUserId() {
         filmService.create(film);
         filmService.addLikeToFilm(1L,1L);
-        filmService.deleteLikeToFilm(1L,1L);
+        filmService.deleteLikeFromFilm(1L,1L);
     }
 
     @Test
-    public void deleteLikeToFilmWithoutLikes() {
+    public void deleteLikeFromFilmWithoutLikes() {
         filmService.create(film);
         try {
-            filmService.deleteLikeToFilm(1L,1L);
+            filmService.deleteLikeFromFilm(1L,1L);
             Assertions.fail();
         } catch (NotFoundException e) {
             Assertions.assertEquals("User hasn't liked this film", e.getDescription());

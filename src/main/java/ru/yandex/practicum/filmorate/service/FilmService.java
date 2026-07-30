@@ -87,7 +87,7 @@ public class FilmService {
         return film;
     }
 
-    public Film deleteLikeToFilm(Long id, Long userId) {
+    public Film deleteLikeFromFilm(Long id, Long userId) {
         checkNullFilm(id);
         Film film = filmStorage.get(id);
 
