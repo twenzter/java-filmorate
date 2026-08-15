@@ -27,5 +27,8 @@ public class Film {
     @NotNull(message = "Film duration can't be empty")
     @Min(value = MIN_FILM_DURATION, message = "Film duration must be at least 1 minute")
     private Integer duration;
+    @NotNull(message = "Film age limit can't be empty")
+    private MPA ageRating;
+    private Set<Genre> genres = new HashSet<>();
     private Set<Long> likes = new HashSet<>();
 }
