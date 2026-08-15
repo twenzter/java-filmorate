@@ -1,5 +1,5 @@
 # java-filmorate
-![схема базы данных](src\main\resources\images\ER-diagram2.png)
+![схема базы данных](./src/main/resources/images/ER-diagram2.png)
 
 ## Основные команды БД:
 
