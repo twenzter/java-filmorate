@@ -1,11 +1,14 @@
 package ru.yandex.practicum.filmorate.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
 public class UpdateUserRequest {
+    @NotNull(message = "id can't be empty")
+    private Long id;
     private String email;
     private String login;
     private String name;

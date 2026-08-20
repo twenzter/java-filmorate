@@ -15,7 +15,6 @@ public class FilmMapper {
         film.setDescription(newFilm.getDescription());
         film.setReleaseDate(newFilm.getReleaseDate());
         film.setDuration(newFilm.getDuration());
-        film.setAgeRating(newFilm.getAgeRating());
         return film;
     }
 
@@ -26,7 +25,6 @@ public class FilmMapper {
         filmDto.setDescription(film.getDescription());
         filmDto.setReleaseDate(film.getReleaseDate());
         filmDto.setDuration(film.getDuration());
-        filmDto.setAgeRating(film.getAgeRating());
         return filmDto;
     }
 
@@ -34,18 +32,19 @@ public class FilmMapper {
         if (updatedFilm.hasName()) {
             film.setName(updatedFilm.getName());
         }
+
         if (updatedFilm.hasDescription()) {
             film.setDescription(updatedFilm.getDescription());
         }
+
         if (updatedFilm.hasReleaseDate()) {
             film.setReleaseDate(updatedFilm.getReleaseDate());
         }
+
         if (updatedFilm.hasDuration()) {
             film.setDuration(updatedFilm.getDuration());
         }
-        if (updatedFilm.hasAgeRating()) {
-            film.setAgeRating(updatedFilm.getAgeRating());
-        }
+
         return film;
     }
 }

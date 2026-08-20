@@ -32,11 +32,11 @@ public class FilmController {
         return filmService.create(film);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public FilmDto update(@PathVariable Long id ,@Valid @RequestBody UpdateFilmRequest film) {
+    public FilmDto update(@Valid @RequestBody UpdateFilmRequest film) {
         log.info("PUT /films request for update film data by id");
-        return filmService.update(id, film);
+        return filmService.update(film);
     }
 
     @GetMapping("/{id}")
@@ -54,7 +54,7 @@ public class FilmController {
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public FilmDto deleteLikeFromFilm(@PathVariable Long id, @PathVariable Long userId) {
         log.info("DELETE /films/{id}/like/{userId} request to delete like from film");
         return filmService.deleteLikeFromFilm(id, userId);

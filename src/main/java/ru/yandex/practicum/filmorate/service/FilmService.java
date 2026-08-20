@@ -43,15 +43,15 @@ public class FilmService {
         return FilmMapper.mapToFilmDto(film);
     }
 
-    public FilmDto update(Long id, UpdateFilmRequest updatedFilm) {
+    public FilmDto update(UpdateFilmRequest updatedFilm) {
         if (updatedFilm.getReleaseDate().isBefore(Film.FIRST_FILM_RELEASE_DATE)) {
             log.warn("Release date is too early");
             throw new ValidationException("releaseDate", "Release date can't be early than - 1895-12-28");
         }
 
         log.trace("Get oldFilm class by id");
-        Film oldFilm = filmStorage.findOne(id).orElseThrow(() -> new
-                NotFoundException("id", "Film with id " + id + " hasn't been found"));
+        Film oldFilm = filmStorage.findOne(updatedFilm.getId()).orElseThrow(() -> new
+                NotFoundException("id", "Film with id " + updatedFilm.getId() + " hasn't been found"));
 
         log.debug("Set new data for film");
         Film film = FilmMapper.updateFilmFields(oldFilm, updatedFilm);

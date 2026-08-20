@@ -34,11 +34,11 @@ public class UserController {
         return userService.create(user);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping
     @ResponseStatus(HttpStatus.OK)
-    public UserDto update(@PathVariable Long id, @Valid @RequestBody UpdateUserRequest user) {
+    public UserDto update(@Valid @RequestBody UpdateUserRequest user) {
         log.info("PUT /users request to update user's data by id");
-        return userService.update(id, user);
+        return userService.update(user);
     }
 
     @GetMapping("/{id}")
@@ -56,7 +56,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Set<UserDto> deleteFriend(@PathVariable Long id, @PathVariable Long friendId) {
         log.info("DELETE /users/{id}/friends/{friendsId} request to delete friend");
         return userService.deleteFriend(id, friendId);

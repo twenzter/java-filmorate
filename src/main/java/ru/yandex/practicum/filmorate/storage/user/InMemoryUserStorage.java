@@ -13,11 +13,13 @@ public class InMemoryUserStorage implements UserStorage {
 
     public User add(User user) {
         user.setId(generateId());
-        return users.put(user.getId(), user);
+        users.put(user.getId(), user);
+        return user;
     }
 
     public User update(User user) {
-        return users.put(user.getId(), user);
+        users.put(user.getId(), user);
+        return user;
     }
 
     public boolean delete(Long id) {

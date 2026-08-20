@@ -1,8 +1,11 @@
 package ru.yandex.practicum.filmorate.dto;
 
 import lombok.Data;
+import ru.yandex.practicum.filmorate.model.FriendshipStatus;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 public class NewUserRequest {

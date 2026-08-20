@@ -6,5 +6,5 @@ public enum Genre {
     CARTOON,
     THRILLER,
     DOCUMENTARY,
-    ACTION
+    ACTION;
 }

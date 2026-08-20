@@ -50,7 +50,7 @@ public class UserService {
         return UserMapper.mapToUserDto(user);
     }
 
-    public UserDto update(Long id, UpdateUserRequest updateUser) {
+    public UserDto update(UpdateUserRequest updateUser) {
         if (updateUser.getLogin().contains(User.SPACE_SYMBOL)) {
             log.warn("Login can't contain spaces");
             throw new ValidationException("login", "Login can't contain spaces");
@@ -61,8 +61,8 @@ public class UserService {
         }
 
         log.trace("Get oldUser class by id");
-        User oldUser = userStorage.findOne(id).orElseThrow(() -> new
-                NotFoundException("id", "User with id " + id + " hasn't been found"));
+        User oldUser = userStorage.findOne(updateUser.getId()).orElseThrow(() -> new
+                NotFoundException("id", "User with id " + updateUser.getId() + " hasn't been found"));
 
         log.debug("Set new data for user");
         User user = UserMapper.updateUserFields(oldUser, updateUser);
@@ -89,16 +89,11 @@ public class UserService {
         if (userFriends.get(friendId) == FriendshipStatus.CONFIRMED) {
             log.warn("User with friendId is already in friends");
             throw new ValidationException("error", "User with friendId is already in friends");
-        }
-        if (friendsFriends.get(id) == FriendshipStatus.UNCONFIRMED) {
+        } else if (friendsFriends.get(id) == FriendshipStatus.UNCONFIRMED) {
             userFriends.put(friendId, FriendshipStatus.CONFIRMED);
             friendsFriends.put(id, FriendshipStatus.CONFIRMED);
-            user.setFriends(userFriends);
-            friend.setFriends(friendsFriends);
-        }
-        if (!friendsFriends.containsKey(id)) {
+        } else {
             userFriends.put(friendId, FriendshipStatus.UNCONFIRMED);
-            user.setFriends(userFriends);
         }
 
         log.debug("Return user set with added friend");
@@ -114,20 +109,11 @@ public class UserService {
         Map<Long, FriendshipStatus> userFriends = user.getFriends();
         Map<Long, FriendshipStatus> friendsFriends = friend.getFriends();
         log.debug("Delete friend to user");
-        if (!userFriends.containsKey(friendId)) {
-            log.warn("User with friendId is not in friends");
-            throw new ValidationException("error", "User with friendId is not in friends");
-        }
+
         if (userFriends.get(friendId) == FriendshipStatus.CONFIRMED) {
-            userFriends.remove(friendId);
             friendsFriends.put(id, FriendshipStatus.UNCONFIRMED);
-            user.setFriends(userFriends);
-            friend.setFriends(friendsFriends);
         }
-        if (userFriends.get(friendId) == FriendshipStatus.UNCONFIRMED) {
-            userFriends.remove(friendId);
-            user.setFriends(userFriends);
-        }
+        userFriends.remove(friendId);
 
         log.debug("Return user set with removed friend");
         return getFriendsList(id);
@@ -139,8 +125,8 @@ public class UserService {
         log.debug("Return user friends list");
         return user.getFriends().keySet().stream()
                 .map(userStorage::findOne)
-                .filter(Optional::isPresent)
-                .map(opt -> UserMapper.mapToUserDto(opt.get()))
+                .flatMap(Optional::stream)
+                .map(UserMapper::mapToUserDto)
                 .collect(Collectors.toSet());
     }
 
@@ -154,8 +140,8 @@ public class UserService {
         return user.getFriends().keySet().stream()
                 .filter(ID -> otherUser.getFriends().containsKey(ID))
                 .map(userStorage::findOne)
-                .filter(Optional::isPresent)
-                .map(opt -> UserMapper.mapToUserDto(opt.get()))
+                .flatMap(Optional::stream)
+                .map(UserMapper::mapToUserDto)
                 .collect(Collectors.toSet());
     }
 }

@@ -44,7 +44,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public Map<String,String> handleThrowable(Throwable e) {
         Map<String,String> error = new HashMap<>();
-        error.put("error", "Unexpected error occurred");
+        error.put("error", e.getMessage());
         return error;
     }
 }

@@ -15,6 +15,4 @@ public class FilmDto {
     private String description;
     private LocalDate releaseDate;
     private Integer duration;
-    private MPA ageRating;
-    private Set<Genre> genres;
 }

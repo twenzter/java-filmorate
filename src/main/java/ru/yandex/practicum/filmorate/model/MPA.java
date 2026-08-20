@@ -5,5 +5,5 @@ public enum MPA {
     PG,
     PG13,
     R,
-    NC17
+    NC17;
 }
