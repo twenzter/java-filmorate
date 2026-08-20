@@ -4,38 +4,43 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Component
 public class InMemoryUserStorage implements UserStorage {
     private static final Map<Long, User> users = new HashMap<>();
 
-    public void clear() {
-        log.debug("Clearing users map");
-        users.clear();
+    public User add(User user) {
+        user.setId(generateId());
+        return users.put(user.getId(), user);
     }
 
-    public User get(Long id) {
-        return users.get(id);
+    public User update(User user) {
+        return users.put(user.getId(), user);
     }
 
-    public boolean containsKey(Long id) {
-        return users.containsKey(id);
+    public boolean delete(Long id) {
+        users.remove(id);
+        return ! users.containsKey(id);
     }
 
-    public void put(Long id, User user) {
-        users.put(id, user);
+    public Optional<User> findOne(Long id) {
+        return Optional.ofNullable(users.get(id));
     }
 
-    public Set<Long> keySet() {
-        return users.keySet();
-    }
-
-    public Collection<User> values() {
+    public Collection<User> findAll() {
         return users.values();
     }
+
+    private long generateId() {
+        log.debug("Calculating next id");
+        long currentId = users.keySet().stream()
+                .mapToLong(id -> id)
+                .max()
+                .orElse(0);
+        log.trace("Return next id");
+        return ++currentId;
+    }
+
 }

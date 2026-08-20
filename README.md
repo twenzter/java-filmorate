@@ -1,5 +1,5 @@
 # java-filmorate
-![схема базы данных](./src/main/resources/images/ER-diagram2.png)
+![схема базы данных](./src/main/resources/images/ER-diagram6.png)
 
 ## Основные команды БД:
 
@@ -8,7 +8,7 @@
 
 ```SQL
 SELECT name, description, release_date, duration 
-FROM Film 
+FROM films
 WHERE id = {id вашего фильма}; 
 ```
 
@@ -17,8 +17,8 @@ WHERE id = {id вашего фильма};
 
 ```SQL
 SELECT f.name, COUNT(fl.user_id) AS likes 
-FROM Film AS f 
-LEFT JOIN FilmLikes AS fl ON fl.film_id = f.id
+FROM films AS f 
+LEFT JOIN films_likes AS fl ON fl.film_id = f.id
 GROUP BY f.id, f.name 
 ORDER BY likes DESC 
 LIMIT 10;
@@ -28,8 +28,8 @@ LIMIT 10;
 
 ```SQL
 SELECT mpa.age_rating 
-FROM Film as f 
-JOIN MPA AS mpa ON f.mpa_id = mpa.id 
+FROM films as f 
+JOIN mpa ON f.mpa_id = mpa.id 
 WHERE f.id = {id вашего фильма};
 ```
 
@@ -37,8 +37,8 @@ WHERE f.id = {id вашего фильма};
 
 ```SQL
 SELECT g.genre 
-FROM FilmGenres AS fg 
-JOIN Genre AS g ON fg.genre_id = g.id 
+FROM films_genres AS fg 
+JOIN genres AS g ON fg.genre_id = g.id 
 WHERE fg.film_id = {id вашего фильма};
 ```
 
@@ -46,7 +46,7 @@ WHERE fg.film_id = {id вашего фильма};
 
 ```SQL
 SELECT email, login, name, birthday 
-FROM User 
+FROM users 
 WHERE id = {id нашего юзера};
 ```
 
@@ -55,8 +55,8 @@ WHERE id = {id нашего юзера};
 
 ```SQL
 SELECT friend_id 
-FROM UserFriends AS uf 
-JOIN FriendshipStatus AS fs ON fs.id = uf.friendship_status_id 
+FROM users_friends AS uf 
+JOIN friendship_status AS fs ON fs.id = uf.friendship_status_id 
 WHERE user_id = {id нашего юзера} AND fs.status = 'CONFIRMED';
 ```
 

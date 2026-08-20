@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 public class User {
@@ -22,6 +22,5 @@ public class User {
     private String name;
     @NotNull(message = "User birthday can't be empty")
     private LocalDate birthday;
-//    private Map<Long, FriendshipStatus> friends = new HashMap<>();
-    private Set<Long> friends = new HashSet<>();
+    private Map<Long, FriendshipStatus> friends = new HashMap<>();
 }

@@ -11,28 +11,37 @@ import java.util.*;
 public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Long, Film> films = new HashMap<>();
 
-    public void clear() {
-        log.debug("Clearing films map");
-        films.clear();
+    public Film add(Film film) {
+        log.debug("Set id for film");
+        film.setId(generateId());
+        return films.put(film.getId(),film);
     }
 
-    public Film get(Long id) {
-        return films.get(id);
+    public Film update(Film film) {
+        return films.put(film.getId(),film);
     }
 
-    public boolean containsKey(Long id) {
-        return films.containsKey(id);
+    public boolean delete(Long id) {
+        films.remove(id);
+        return ! films.containsKey(id);
     }
 
-    public void put(Long id,Film film) {
-        films.put(id,film);
+    public Optional<Film> findOne(Long id) {
+        return Optional.ofNullable(films.get(id));
     }
 
-    public Set<Long> keySet() {
-        return films.keySet();
-    }
-
-    public Collection<Film> values() {
+    public Collection<Film> findAll() {
         return films.values();
     }
+
+    private long generateId() {
+        log.debug("Calculating next id");
+        long currentId = films.keySet().stream()
+                .mapToLong(id -> id)
+                .max()
+                .orElse(0);
+        log.trace("Return next id");
+        return ++currentId;
+    }
+
 }
