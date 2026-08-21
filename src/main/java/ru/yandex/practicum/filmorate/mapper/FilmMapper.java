@@ -23,10 +23,15 @@ public class FilmMapper {
         film.setReleaseDate(newFilm.getReleaseDate());
         film.setDuration(newFilm.getDuration());
         film.setMpa(MPAMapper.mapToMpa(newFilm.getMpa()));
-        film.setGenres(newFilm.getGenres().stream()
-                .map(GenreMapper::mapToGenre)
-                .sorted(Comparator.comparing(Genre::getId))
-                .collect(Collectors.toCollection(LinkedHashSet::new)));
+        if (newFilm.getGenres() != null) {
+            film.setGenres(newFilm.getGenres().stream()
+                    .map(GenreMapper::mapToGenre)
+                    .sorted(Comparator.comparing(Genre::getId))
+                    .collect(Collectors.toCollection(LinkedHashSet::new)));
+        } else {
+            film.setGenres(new LinkedHashSet<>());
+        }
+
         return film;
     }
 
@@ -38,15 +43,19 @@ public class FilmMapper {
         filmDto.setReleaseDate(film.getReleaseDate());
         filmDto.setDuration(film.getDuration());
         filmDto.setMpa(MPAMapper.mapToMPADto(film.getMpa()));
-        filmDto.setGenres(film.getGenres().stream()
-                .map(GenreMapper::mapToGenreDto)
-                .sorted(Comparator.comparing(GenreDto::getId))
-                .collect(Collectors.toCollection(LinkedHashSet::new)));
+        if (film.getGenres() != null) {
+            filmDto.setGenres(film.getGenres().stream()
+                    .map(GenreMapper::mapToGenreDto)
+                    .sorted(Comparator.comparing(GenreDto::getId))
+                    .collect(Collectors.toCollection(LinkedHashSet::new)));
+        } else {
+            filmDto.setGenres(new LinkedHashSet<>());
+        }
+
         return filmDto;
     }
 
     public static Film updateFilmFields(Film film, UpdateFilmRequest updatedFilm) {
-        film.setId(updatedFilm.getId());
         if (updatedFilm.hasName()) {
             film.setName(updatedFilm.getName());
         }

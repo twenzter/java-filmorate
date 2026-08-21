@@ -56,6 +56,7 @@ public class FilmService {
         Film film = FilmMapper.updateFilmFields(oldFilm, updatedFilm);
 
         filmStorage.update(film);
+
         log.info("Film data has been updated!");
         return FilmMapper.mapToFilmDto(film);
     }

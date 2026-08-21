@@ -33,7 +33,6 @@ public class UserMapper {
     }
 
     public static User updateUserFields(User user, UpdateUserRequest updatedUser) {
-        user.setId(updatedUser.getId());
         if (updatedUser.hasEmail()) {
             user.setEmail(updatedUser.getEmail());
         }
