@@ -3,10 +3,8 @@ package ru.yandex.practicum.filmorate.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.dto.MPADto;
 import ru.yandex.practicum.filmorate.model.MPA;
 import ru.yandex.practicum.filmorate.service.MPAService;
 
@@ -21,7 +19,13 @@ public class MPAController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<MPA> findAll() {
+    public Collection<MPADto> findAll() {
         return mpaService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public MPADto findMPA(@PathVariable Long id) {
+        return mpaService.findMPA(id);
     }
 }

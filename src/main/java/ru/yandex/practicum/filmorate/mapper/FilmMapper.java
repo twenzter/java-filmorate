@@ -6,6 +6,9 @@ import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.MPA;
+
+import java.util.stream.Collectors;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FilmMapper {
@@ -15,6 +18,11 @@ public class FilmMapper {
         film.setDescription(newFilm.getDescription());
         film.setReleaseDate(newFilm.getReleaseDate());
         film.setDuration(newFilm.getDuration());
+//        film.setMpa();
+//        film.setGenres(newFilm.getGenres().stream()
+//                .map(GenreMapper::mapToGenre)
+//                .collect(Collectors.toSet()));
+//        film.setLikes(newFilm.getLikes());
         return film;
     }
 
@@ -25,6 +33,9 @@ public class FilmMapper {
         filmDto.setDescription(film.getDescription());
         filmDto.setReleaseDate(film.getReleaseDate());
         filmDto.setDuration(film.getDuration());
+//        filmDto.setMpa(film.getMpa());
+//        film.setGenres(film.getGenres());
+//        filmDto.setLikes(film.getLikes());
         return filmDto;
     }
 
@@ -32,19 +43,24 @@ public class FilmMapper {
         if (updatedFilm.hasName()) {
             film.setName(updatedFilm.getName());
         }
-
         if (updatedFilm.hasDescription()) {
             film.setDescription(updatedFilm.getDescription());
         }
-
         if (updatedFilm.hasReleaseDate()) {
             film.setReleaseDate(updatedFilm.getReleaseDate());
         }
-
         if (updatedFilm.hasDuration()) {
             film.setDuration(updatedFilm.getDuration());
         }
-
+//        if (updatedFilm.hasMPA()) {
+//            film.setMpa(updatedFilm.getMpa());
+//        }
+//        if (updatedFilm.hasGenres()) {
+//            film.setGenres(updatedFilm.getGenres());
+//        }
+//        if (updatedFilm.hasLikes()) {
+//            film.setLikes(updatedFilm.getLikes());
+//        }
         return film;
     }
 }
