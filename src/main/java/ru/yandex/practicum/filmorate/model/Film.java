@@ -7,7 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Data
@@ -29,6 +31,6 @@ public class Film {
     private Integer duration;
     @NotNull(message = "Film age limit can't be empty")
     private MPA mpa;
-    private Set<Genre> genres = new HashSet<>();
+    private Set<Genre> genres;
     private Set<Long> likes = new HashSet<>();
 }

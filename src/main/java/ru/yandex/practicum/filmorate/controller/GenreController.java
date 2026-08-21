@@ -12,7 +12,7 @@ import java.util.Collection;
 
 @Slf4j
 @RestController
-@RequestMapping("/genre")
+@RequestMapping("/genres")
 @RequiredArgsConstructor
 public class GenreController {
     private final GenreService genreService;

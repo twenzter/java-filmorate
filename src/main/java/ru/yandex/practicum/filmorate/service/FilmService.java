@@ -49,13 +49,13 @@ public class FilmService {
             throw new ValidationException("releaseDate", "Release date can't be early than - 1895-12-28");
         }
 
-        log.trace("Get oldFilm class by id");
         Film oldFilm = filmStorage.findOne(updatedFilm.getId()).orElseThrow(() -> new
                 NotFoundException("id", "Film with id " + updatedFilm.getId() + " hasn't been found"));
 
         log.debug("Set new data for film");
         Film film = FilmMapper.updateFilmFields(oldFilm, updatedFilm);
 
+        filmStorage.update(film);
         log.info("Film data has been updated!");
         return FilmMapper.mapToFilmDto(film);
     }
@@ -81,7 +81,7 @@ public class FilmService {
         return FilmMapper.mapToFilmDto(film);
     }
 
-    public FilmDto deleteLikeFromFilm(Long id, Long userId) {
+    public void deleteLikeFromFilm(Long id, Long userId) {
         Film film = filmStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "Film with id " + id + " hasn't been found"));
 
@@ -91,7 +91,7 @@ public class FilmService {
         }
         log.debug("Remove likes to film");
         film.getLikes().remove(userId);
-        return FilmMapper.mapToFilmDto(film);
+        FilmMapper.mapToFilmDto(film);
     }
 
     public Collection<FilmDto> findPopularFilms(Long count) {

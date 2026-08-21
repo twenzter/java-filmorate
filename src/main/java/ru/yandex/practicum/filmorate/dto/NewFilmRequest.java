@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Set;
 
 @Data
@@ -30,5 +31,4 @@ public class NewFilmRequest {
     @NotNull(message = "Film age limit can't be empty")
     private NewMPARequest mpa;
     private Set<NewGenreRequest> genres;
-    private Set<Long> likes;
 }

@@ -55,9 +55,9 @@ public class FilmController {
 
     @DeleteMapping("/{id}/like/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public FilmDto deleteLikeFromFilm(@PathVariable Long id, @PathVariable Long userId) {
+    public void deleteLikeFromFilm(@PathVariable Long id, @PathVariable Long userId) {
         log.info("DELETE /films/{id}/like/{userId} request to delete like from film");
-        return filmService.deleteLikeFromFilm(id, userId);
+        filmService.deleteLikeFromFilm(id, userId);
     }
 
     @GetMapping("/popular")

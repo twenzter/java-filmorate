@@ -5,6 +5,5 @@ import lombok.Data;
 
 @Data
 public class NewMPARequest {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 }

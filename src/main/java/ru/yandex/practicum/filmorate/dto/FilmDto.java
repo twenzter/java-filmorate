@@ -10,6 +10,7 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +29,6 @@ public class FilmDto {
     @Min(value = Film.MIN_FILM_DURATION, message = "Film duration must be at least 1 minute")
     private Integer duration;
     @NotNull(message = "Film age limit can't be empty")
-    private MPA mpa;
-    private Set<Genre> genres;
-    private Set<Long> likes;
+    private MPADto mpa;
+    private Set<GenreDto> genres;
 }

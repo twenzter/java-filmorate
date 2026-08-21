@@ -11,27 +11,21 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
 
 import java.time.LocalDate;
+import java.util.Collection;
 import java.util.Set;
 
 @Data
 public class UpdateFilmRequest {
     @NotNull(message = "id can't be empty")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-    @NotBlank(message = "Film name can't be empty")
     private String name;
-    @NotBlank(message = "Film description can't be empty")
     @Size(max = Film.MAX_DESCRIPTION_LENGTH, message = "Film description must have less than 200 symbols")
     private String description;
-    @NotNull(message = "Film releaseDate can't be empty")
     private LocalDate releaseDate;
-    @NotNull(message = "Film duration can't be empty")
     @Min(value = Film.MIN_FILM_DURATION, message = "Film duration must be at least 1 minute")
     private Integer duration;
-    @NotNull(message = "Film age limit can't be empty")
-    private MPA mpa;
-    private Set<Genre> genres;
-    private Set<Long> likes;
+    private NewMPARequest mpa;
+    private Set<NewGenreRequest> genres;
 
     public boolean hasName() {
         return ! (name == null || name.isBlank());
@@ -55,9 +49,5 @@ public class UpdateFilmRequest {
 
     public boolean hasGenres() {
         return genres != null;
-    }
-
-    public boolean hasLikes() {
-        return likes != null;
     }
 }

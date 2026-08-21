@@ -67,6 +67,7 @@ public class UserService {
         log.debug("Set new data for user");
         User user = UserMapper.updateUserFields(oldUser, updateUser);
 
+        userStorage.update(user);
         log.info("User data has been updated!");
         return UserMapper.mapToUserDto(user);
     }
@@ -100,7 +101,7 @@ public class UserService {
         return getFriendsList(id);
     }
 
-    public Set<UserDto> deleteFriend(Long id, Long friendId) {
+    public void deleteFriend(Long id, Long friendId) {
         User user = userStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + id + " hasn't been found"));
         User friend = userStorage.findOne(friendId).orElseThrow(() -> new
@@ -114,9 +115,6 @@ public class UserService {
             friendsFriends.put(id, FriendshipStatus.UNCONFIRMED);
         }
         userFriends.remove(friendId);
-
-        log.debug("Return user set with removed friend");
-        return getFriendsList(id);
     }
 
     public Set<UserDto> getFriendsList(Long id) {

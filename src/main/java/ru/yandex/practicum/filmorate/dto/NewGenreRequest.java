@@ -5,6 +5,5 @@ import lombok.Data;
 
 @Data
 public class NewGenreRequest {
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 }
