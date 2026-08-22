@@ -17,7 +17,7 @@ WHERE id = {id вашего фильма};
 
 ```SQL
 SELECT f.name, COUNT(fl.user_id) AS likes 
-FROM films AS f 
+FROM films AS f
 LEFT JOIN films_likes AS fl ON fl.film_id = f.id
 GROUP BY f.id, f.name 
 ORDER BY likes DESC 
