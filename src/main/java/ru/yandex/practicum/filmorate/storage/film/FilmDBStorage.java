@@ -55,23 +55,21 @@ public class FilmDBStorage implements FilmStorage {
     }
 
     @Override
-    public boolean delete(Long id) {
+    public void delete(Long id) {
         String sql = "DELETE FROM films WHERE id = ?";
-        return jdbcTemplate.update(sql, id) > 0;
+        jdbcTemplate.update(sql, id);
     }
 
     @Override
     public Optional<Film> findOne(Long id) {
         String sql = "SELECT * FROM films WHERE id = ?";
-        List<Film> films =
-                jdbcTemplate.query(sql,
-                        new FilmRowMapper(), id);
+        List<Film> films = jdbcTemplate.query(sql, new FilmRowMapper(), id);
         if (films.isEmpty()) {
             return Optional.empty();
         }
         Film film = films.getFirst();
-        film.setGenres(new HashSet<>(getFilmGenresById(id)));
-        film.setLikes(new HashSet<>(getFilmLikesById(id)));
+        film.setGenres(getFilmGenresById(id));
+        film.setLikes(getFilmLikesById(id));
         return Optional.of(film);
     }
 
@@ -80,8 +78,8 @@ public class FilmDBStorage implements FilmStorage {
         String sql = "SELECT * FROM films";
         List<Film> films = jdbcTemplate.query(sql, new FilmRowMapper());
         for (Film film: films) {
-            film.setGenres(new HashSet<>(getFilmGenresById(film.getId())));
-            film.setLikes(new HashSet<>(getFilmLikesById(film.getId())));
+            film.setGenres(getFilmGenresById(film.getId()));
+            film.setLikes(getFilmLikesById(film.getId()));
         }
         return films;
     }
@@ -94,28 +92,28 @@ public class FilmDBStorage implements FilmStorage {
     }
 
     @Override
-    public boolean deleteLike(Long id, Long userId) {
+    public void deleteLike(Long id, Long userId) {
         String sql = "DELETE FROM films_likes WHERE film_id = ?";
-        return jdbcTemplate.update(sql, id) > 0;
+        jdbcTemplate.update(sql, id);
     }
 
-    public Collection<Genre> getFilmGenresById(Long id) {
+    private Set<Genre> getFilmGenresById(Long id) {
         String sql = "SELECT genre_id FROM films_genres WHERE film_id = ?";
-        return jdbcTemplate.query(sql,
-                new GenreRowMapper(), id);
+        return new HashSet<>(jdbcTemplate.query(sql,
+                new GenreRowMapper(), id));
     }
 
-    public Collection<Long> getFilmLikesById(Long id) {
+    private Set<Long> getFilmLikesById(Long id) {
         String sql = "SELECT user_id FROM films_likes WHERE film_id = ?";
-        return jdbcTemplate.query(sql,
-                (rs, rowNum) -> rs.getLong("user_id"), id);
+        return new HashSet<>(jdbcTemplate.query(sql,
+                (rs, rowNum) -> rs.getLong("user_id"), id));
     }
 
-    public void saveGenres(Film film) {
-        String sqlDelete = "DELETE FROM films_genres WHERE film_id = ?";
+    private void saveGenres(Film film) {
         if (film.getGenres() == null || film.getGenres().isEmpty()) {
             return;
         }
+        String sqlDelete = "DELETE FROM films_genres WHERE film_id = ?";
         jdbcTemplate.update(sqlDelete, film.getId());
         Collection<Genre> genres = film.getGenres();
         String sqlUpdate = "INSERT INTO films_genres (film_id, genre_id) VALUES (?, ?)";

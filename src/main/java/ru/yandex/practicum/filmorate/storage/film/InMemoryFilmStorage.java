@@ -29,9 +29,8 @@
 //        return film;
 //    }
 //
-//    public boolean delete(Long id) {
+//    public void delete(Long id) {
 //        films.remove(id);
-//        return ! films.containsKey(id);
 //    }
 //
 //    public Optional<Film> findOne(Long id) {
@@ -55,7 +54,7 @@
 //        return film;
 //    }
 //
-//    public boolean deleteLike(Long id, Long userId) {
+//    public void deleteLike(Long id, Long userId) {
 //        Film film = findOne(id).orElseThrow(() -> new
 //                NotFoundException("id", "Film with id " + id + " hasn't been found"));
 //
@@ -65,7 +64,6 @@
 //        }
 //        log.debug("Remove likes to film");
 //        film.getLikes().remove(userId);
-//        return true;
 //    }
 //
 //    private long generateId() {
