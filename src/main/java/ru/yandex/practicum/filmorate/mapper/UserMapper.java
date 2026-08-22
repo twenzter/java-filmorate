@@ -14,10 +14,10 @@ public class UserMapper {
         user.setEmail(newUser.getEmail());
         user.setLogin(newUser.getLogin());
         user.setBirthday(newUser.getBirthday());
-        if (!(newUser.getName() == null || newUser.getName().isBlank())) {
-            user.setName(newUser.getName());
-        } else {
+        if (newUser.getName() == null || newUser.getName().isBlank()) {
             user.setName(newUser.getLogin());
+        } else {
+            user.setName(newUser.getName());
         }
         return user;
     }

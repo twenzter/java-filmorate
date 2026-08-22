@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -12,12 +14,12 @@ import ru.yandex.practicum.filmorate.storage.film.mappers.GenreRowMapper;
 
 import java.util.*;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
+@Primary
 public class FilmDBStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
-
-
 
     @Override
     public Film add(Film film) {
@@ -86,7 +88,7 @@ public class FilmDBStorage implements FilmStorage {
 
     @Override
     public Film addLike(Long id, Long userId) {
-        String sql = "INSERT INTO films_likes (film_id, user_id) VALUES (?, ?)";
+        String sql = "MERGE INTO films_likes (film_id, user_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, id, userId);
         return findOne(id).orElseThrow(() -> new NotFoundException("id", "Film hasn't been found"));
     }

@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
@@ -69,7 +68,7 @@ public class FilmService {
     }
 
     public FilmDto addLikeToFilm(Long id, Long userId) {
-        filmStorage.findOne(id).orElseThrow(() -> new
+        Film newFilm = filmStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "Film with id " + id + " hasn't been found"));
         userStorage.findOne(userId).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + userId + " hasn't been found"));

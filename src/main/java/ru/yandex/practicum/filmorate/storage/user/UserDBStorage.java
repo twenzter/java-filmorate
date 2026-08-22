@@ -1,6 +1,8 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -10,8 +12,10 @@ import ru.yandex.practicum.filmorate.storage.user.mappers.UserRowMapper;
 
 import java.util.*;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
+@Primary
 public class UserDBStorage implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
 
@@ -60,7 +64,7 @@ public class UserDBStorage implements UserStorage {
             return Optional.empty();
         }
         User user = users.getFirst();
-        user.setFriends(getUserFriendsById(user.getId()));
+        user.setFriends(findFriends(user.getId()));
         return Optional.of(user);
     }
 
@@ -69,12 +73,44 @@ public class UserDBStorage implements UserStorage {
         String sql = "SELECT * FROM users";
         List<User> users = jdbcTemplate.query(sql, new UserRowMapper());
         for (User user: users) {
-            user.setFriends(getUserFriendsById(user.getId()));
+            user.setFriends(findFriends(user.getId()));
         }
         return users;
     }
 
-    private Map<Long, FriendshipStatus> getUserFriendsById(Long id) {
+    @Override
+    public Map<Long, FriendshipStatus> addFriend(Long id, Long friendId) {
+        String sqlCheckStatus = "SELECT friendship_status_id FROM users_friends WHERE user_id = ? AND friend_id = ?";
+        List<Long> friendStatus = jdbcTemplate.query(sqlCheckStatus,
+                (rs,rowNum) -> rs.getLong("friendship_status_id"), friendId, id);
+
+        Long status = FriendshipStatus.UNCONFIRMED.getId();
+        if (!friendStatus.isEmpty()) {
+            status = FriendshipStatus.CONFIRMED.getId();
+            String sqlConfirmedFriend =
+                    "UPDATE users_friends SET friendship_status_id = ? WHERE user_id = ? AND friend_id = ?";
+            jdbcTemplate.update(sqlConfirmedFriend, status, friendId, id);
+            jdbcTemplate.update(sqlConfirmedFriend, status, id, friendId);
+        }
+
+        String sqlUnconfirmedFriend =
+                "MERGE INTO users_friends (user_id, friend_id, friendship_status_id) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sqlUnconfirmedFriend, id, friendId, status);
+        return findFriends(id);
+    }
+
+    @Override
+    public void deleteFriend(Long id, Long friendId) {
+        String sqlDeleteFriend = "DELETE FROM users_friends WHERE user_id = ? AND friend_id = ?";
+        jdbcTemplate.update(sqlDeleteFriend, id, friendId);
+
+        Long status = FriendshipStatus.UNCONFIRMED.getId();
+        String sqlUpdateFriend = "UPDATE users_friends SET friendship_status_id = ? WHERE user_id = ? AND friend_id = ?";
+        jdbcTemplate.update(sqlUpdateFriend, status, friendId, id);
+    }
+
+    @Override
+    public Map<Long, FriendshipStatus> findFriends(Long id) {
         String sql = "SELECT friend_id, friendship_status_id FROM users_friends WHERE user_id = ?";
         Map<Long, FriendshipStatus> friendMap = new HashMap<>();
 

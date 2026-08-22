@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dto.NewUserRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
@@ -10,13 +9,11 @@ import ru.yandex.practicum.filmorate.dto.UserDto;
 import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.mapper.UserMapper;
-import ru.yandex.practicum.filmorate.model.FriendshipStatus;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,7 +21,6 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-@Qualifier("InMemoryUserStorage")
 public class UserService {
     private final UserStorage userStorage;
 
@@ -81,49 +77,34 @@ public class UserService {
     }
 
     public Set<UserDto> addFriend(Long id, Long friendId) {
-        User user = userStorage.findOne(id).orElseThrow(() -> new
+        userStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + id + " hasn't been found"));
-        User friend = userStorage.findOne(friendId).orElseThrow(() -> new
+        userStorage.findOne(friendId).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + friendId + " hasn't been found"));
 
-        Map<Long, FriendshipStatus> userFriends = user.getFriends();
-        Map<Long, FriendshipStatus> friendsFriends = friend.getFriends();
-        log.debug("Add friend to user");
-        if (userFriends.get(friendId) == FriendshipStatus.CONFIRMED) {
-            log.warn("User with friendId is already in friends");
-            throw new ValidationException("error", "User with friendId is already in friends");
-        } else if (friendsFriends.get(id) == FriendshipStatus.UNCONFIRMED) {
-            userFriends.put(friendId, FriendshipStatus.CONFIRMED);
-            friendsFriends.put(id, FriendshipStatus.CONFIRMED);
-        } else {
-            userFriends.put(friendId, FriendshipStatus.UNCONFIRMED);
+        if (userStorage.findFriends(id).get(friendId) != null) {
+            log.warn("User with friendId is already add to friends");
+            throw new ValidationException("error", "User with friendId is already add to friends");
         }
 
-        log.debug("Return user set with added friend");
+        userStorage.addFriend(id, friendId);
         return getFriendsList(id);
     }
 
     public void deleteFriend(Long id, Long friendId) {
-        User user = userStorage.findOne(id).orElseThrow(() -> new
+        userStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + id + " hasn't been found"));
-        User friend = userStorage.findOne(friendId).orElseThrow(() -> new
+        userStorage.findOne(friendId).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + friendId + " hasn't been found"));
 
-        Map<Long, FriendshipStatus> userFriends = user.getFriends();
-        Map<Long, FriendshipStatus> friendsFriends = friend.getFriends();
-        log.debug("Delete friend to user");
-
-        if (userFriends.get(friendId) == FriendshipStatus.CONFIRMED) {
-            friendsFriends.put(id, FriendshipStatus.UNCONFIRMED);
-        }
-        userFriends.remove(friendId);
+        userStorage.deleteFriend(id, friendId);
     }
 
     public Set<UserDto> getFriendsList(Long id) {
-        User user = userStorage.findOne(id).orElseThrow(() -> new
+        userStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + id + " hasn't been found"));
-        log.debug("Return user friends list");
-        return user.getFriends().keySet().stream()
+
+        return userStorage.findFriends(id).keySet().stream()
                 .map(userStorage::findOne)
                 .flatMap(Optional::stream)
                 .map(UserMapper::mapToUserDto)
@@ -131,14 +112,14 @@ public class UserService {
     }
 
     public Set<UserDto> getCommonFriends(Long id, Long otherId) {
-        User user = userStorage.findOne(id).orElseThrow(() -> new
+        userStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + id + " hasn't been found"));
-        User otherUser = userStorage.findOne(otherId).orElseThrow(() -> new
+        userStorage.findOne(otherId).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + otherId + " hasn't been found"));
 
         log.debug("Return user common friends list");
-        return user.getFriends().keySet().stream()
-                .filter(ID -> otherUser.getFriends().containsKey(ID))
+        return userStorage.findFriends(id).keySet().stream()
+                .filter(ID -> userStorage.findFriends(otherId).containsKey(ID))
                 .map(userStorage::findOne)
                 .flatMap(Optional::stream)
                 .map(UserMapper::mapToUserDto)

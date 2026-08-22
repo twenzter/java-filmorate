@@ -10,3 +10,6 @@ INSERT INTO genres (genre) VALUES ('Мультфильм');
 INSERT INTO genres (genre) VALUES ('Триллер');
 INSERT INTO genres (genre) VALUES ('Документальный');
 INSERT INTO genres (genre) VALUES ('Боевик');
+
+INSERT INTO friendship_status (status) VALUES ('CONFIRMED');
+INSERT INTO friendship_status (status) VALUES ('UNCONFIRMED');

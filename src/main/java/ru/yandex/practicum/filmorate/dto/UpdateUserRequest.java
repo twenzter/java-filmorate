@@ -1,15 +1,10 @@
 package ru.yandex.practicum.filmorate.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import ru.yandex.practicum.filmorate.model.FriendshipStatus;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 @Data
 public class UpdateUserRequest {
