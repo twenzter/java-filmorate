@@ -11,4 +11,7 @@ public interface FilmStorage {
     boolean delete(Long id);
     Optional<Film> findOne(Long id);
     Collection<Film> findAll();
+
+    Film addLike(Long id, Long userId);
+    boolean deleteLike(Long id, Long userId);
 }

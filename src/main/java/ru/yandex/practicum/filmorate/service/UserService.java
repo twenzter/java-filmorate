@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dto.NewUserRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Qualifier("InMemoryUserStorage")
 public class UserService {
     private final UserStorage userStorage;
 
@@ -34,11 +36,11 @@ public class UserService {
 
     public UserDto create(NewUserRequest newUser) {
         if (newUser.getLogin().contains(User.SPACE_SYMBOL)) {
-            log.warn("Login can't contain spaces");
+            log.warn("Login in create can't contain spaces");
             throw new ValidationException("login", "Login can't contain spaces");
         }
         if (newUser.getBirthday().isAfter(LocalDate.now())) {
-            log.warn("Birthday can't be in future");
+            log.warn("Birthday in create can't be in future");
             throw new ValidationException("birthday", "Birthday can't be in future");
         }
 
@@ -52,11 +54,11 @@ public class UserService {
 
     public UserDto update(UpdateUserRequest updateUser) {
         if (updateUser.getLogin().contains(User.SPACE_SYMBOL)) {
-            log.warn("Login can't contain spaces");
+            log.warn("Login in update can't contain spaces");
             throw new ValidationException("login", "Login can't contain spaces");
         }
         if (updateUser.getBirthday().isAfter(LocalDate.now())) {
-            log.warn("Birthday can't be in future");
+            log.warn("Birthday in update can't be in future");
             throw new ValidationException("birthday", "Birthday can't be in future");
         }
 

@@ -11,26 +11,31 @@ import java.util.*;
 public class InMemoryUserStorage implements UserStorage {
     private static final Map<Long, User> users = new HashMap<>();
 
+    @Override
     public User add(User user) {
         user.setId(generateId());
         users.put(user.getId(), user);
         return user;
     }
 
+    @Override
     public User update(User user) {
         users.put(user.getId(), user);
         return user;
     }
 
+    @Override
     public boolean delete(Long id) {
         users.remove(id);
         return ! users.containsKey(id);
     }
 
+    @Override
     public Optional<User> findOne(Long id) {
         return Optional.ofNullable(users.get(id));
     }
 
+    @Override
     public Collection<User> findAll() {
         return users.values();
     }

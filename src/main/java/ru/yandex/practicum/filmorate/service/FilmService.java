@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.dto.FilmDto;
 import ru.yandex.practicum.filmorate.dto.NewFilmRequest;
@@ -31,7 +32,7 @@ public class FilmService {
 
     public FilmDto create(NewFilmRequest newFilm) {
         if (newFilm.getReleaseDate().isBefore(Film.FIRST_FILM_RELEASE_DATE)) {
-            log.warn("Release date is too early");
+            log.warn("Release date in create is too early");
             throw new ValidationException("releaseDate", "Release date can't be early than - 1895-12-28");
         }
 
@@ -45,7 +46,7 @@ public class FilmService {
 
     public FilmDto update(UpdateFilmRequest updatedFilm) {
         if (updatedFilm.getReleaseDate().isBefore(Film.FIRST_FILM_RELEASE_DATE)) {
-            log.warn("Release date is too early");
+            log.warn("Release date in update is too early");
             throw new ValidationException("releaseDate", "Release date can't be early than - 1895-12-28");
         }
 
@@ -68,31 +69,22 @@ public class FilmService {
     }
 
     public FilmDto addLikeToFilm(Long id, Long userId) {
-        Film film = filmStorage.findOne(id).orElseThrow(() -> new
+        filmStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "Film with id " + id + " hasn't been found"));
         userStorage.findOne(userId).orElseThrow(() -> new
                 NotFoundException("id", "User with id " + userId + " hasn't been found"));
 
-        if (film.getLikes().contains(userId)) {
-            log.warn("User already liked this film");
-            throw new ValidationException("likes", "User already liked this film");
-        }
-        log.debug("Add likes to film");
-        film.getLikes().add(userId);
+        Film film = filmStorage.addLike(id, userId);
         return FilmMapper.mapToFilmDto(film);
     }
 
     public void deleteLikeFromFilm(Long id, Long userId) {
-        Film film = filmStorage.findOne(id).orElseThrow(() -> new
+        filmStorage.findOne(id).orElseThrow(() -> new
                 NotFoundException("id", "Film with id " + id + " hasn't been found"));
+        userStorage.findOne(userId).orElseThrow(() -> new
+                NotFoundException("id", "User with id " + userId + " hasn't been found"));
 
-        if (!film.getLikes().contains(userId)) {
-            log.warn("User hasn't liked this film");
-            throw new NotFoundException("likes", "User hasn't liked this film");
-        }
-        log.debug("Remove likes to film");
-        film.getLikes().remove(userId);
-        FilmMapper.mapToFilmDto(film);
+        filmStorage.deleteLike(id, userId);
     }
 
     public Collection<FilmDto> findPopularFilms(Long count) {
