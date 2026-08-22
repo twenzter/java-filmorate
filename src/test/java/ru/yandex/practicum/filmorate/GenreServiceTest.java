@@ -15,11 +15,11 @@ public class GenreServiceTest {
 
     @Test
     public void findALlGenres() {
-        List<GenreDto> MPAs =
+        List<GenreDto> genres =
                 Stream.of(Genre.COMEDY, Genre.DRAMA, Genre.CARTOON, Genre.THRILLER, Genre.DOCUMENTARY, Genre.ACTION)
                         .map(GenreMapper::mapToGenreDto)
                         .toList();
-        Assertions.assertEquals(MPAs, genreService.findAll());
+        Assertions.assertEquals(genres, genreService.findAll());
     }
 
     @Test

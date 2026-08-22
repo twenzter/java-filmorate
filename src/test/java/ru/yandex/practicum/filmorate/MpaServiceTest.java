@@ -15,10 +15,10 @@ public class MpaServiceTest {
 
     @Test
     public void findALlMpa() {
-        List<MPADto> MPAs = Stream.of(MPA.G, MPA.PG, MPA.PG13, MPA.R, MPA.NC17)
+        List<MPADto> mpa = Stream.of(MPA.G, MPA.PG, MPA.PG13, MPA.R, MPA.NC17)
                 .map(MPAMapper::mapToMPADto)
                 .toList();
-        Assertions.assertEquals(MPAs, mpaService.findAll());
+        Assertions.assertEquals(mpa, mpaService.findAll());
     }
 
     @Test
