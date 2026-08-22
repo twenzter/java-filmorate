@@ -16,12 +16,12 @@ public class InMemoryFilmStorage implements FilmStorage {
     public Film add(Film film) {
         log.debug("Set id for film");
         film.setId(generateId());
-        films.put(film.getId(),film);
+        films.put(film.getId(), film);
         return film;
     }
 
     public Film update(Film film) {
-        films.put(film.getId(),film);
+        films.put(film.getId(), film);
         return film;
     }
 

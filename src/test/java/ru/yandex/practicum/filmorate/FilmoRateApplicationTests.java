@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Import;
 import ru.yandex.practicum.filmorate.dto.NewMPARequest;
 import ru.yandex.practicum.filmorate.dto.UpdateFilmRequest;
 import ru.yandex.practicum.filmorate.dto.UpdateUserRequest;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.mapper.FilmMapper;
 import ru.yandex.practicum.filmorate.mapper.UserMapper;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -38,13 +37,13 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testAddUser() {
-        User newUser = userStorage.add(createUser("email@mail.ru","login"));
+        User newUser = userStorage.add(createUser("email@mail.ru", "login"));
         Assertions.assertEquals(newUser, userStorage.findOne(newUser.getId()).get());
     }
 
     @Test
     public void testFindUserById() {
-        User newUser = userStorage.add(createUser("email@mail.ru","login"));
+        User newUser = userStorage.add(createUser("email@mail.ru", "login"));
 
         Optional<User> userOptional = userStorage.findOne(newUser.getId());
 
@@ -57,22 +56,22 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testFindUsers() {
-        userStorage.add(createUser("email@mail.ru","login"));
-        userStorage.add(createUser("emailOther@mail.ru","login228"));
+        userStorage.add(createUser("email@mail.ru", "login"));
+        userStorage.add(createUser("emailOther@mail.ru", "login228"));
 
         Assertions.assertEquals(2, userStorage.findAll().size());
     }
 
     @Test
     public void testDeleteUser() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
         userStorage.delete(user.getId());
         Assertions.assertTrue(userStorage.findAll().isEmpty());
     }
 
     @Test
     public void testUpdateUser() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
         UpdateUserRequest updateUserRequest = new UpdateUserRequest();
         updateUserRequest.setId(user.getId());
         updateUserRequest.setLogin("otherLogin");
@@ -84,14 +83,14 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testGetEmptyFriendsList() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
         Assertions.assertTrue(userStorage.findFriends(user.getId()).isEmpty());
     }
 
     @Test
     public void testGetFriendsListWithFriends() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
-        User user2 = userStorage.add(createUser("emailOther@mail.ru","login228"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
+        User user2 = userStorage.add(createUser("emailOther@mail.ru", "login228"));
 
         userStorage.addFriend(user.getId(), user2.getId());
         Assertions.assertEquals(1, userStorage.findFriends(user.getId()).size());
@@ -99,8 +98,8 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testAddFriendUnconfirmed() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
-        User user2 = userStorage.add(createUser("emailOther@mail.ru","login228"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
+        User user2 = userStorage.add(createUser("emailOther@mail.ru", "login228"));
 
         userStorage.addFriend(user.getId(), user2.getId());
         Assertions.assertEquals(FriendshipStatus.UNCONFIRMED, userStorage.findFriends(user.getId()).get(user2.getId()));
@@ -108,8 +107,8 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testAddFriendConfirmed() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
-        User user2 = userStorage.add(createUser("emailOther@mail.ru","login228"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
+        User user2 = userStorage.add(createUser("emailOther@mail.ru", "login228"));
 
         userStorage.addFriend(user.getId(), user2.getId());
         userStorage.addFriend(user2.getId(), user.getId());
@@ -118,30 +117,30 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testDeleteFriendUnconfirmed() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
-        User user2 = userStorage.add(createUser("emailOther@mail.ru","login228"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
+        User user2 = userStorage.add(createUser("emailOther@mail.ru", "login228"));
 
         userStorage.addFriend(user.getId(), user2.getId());
-        userStorage.deleteFriend(user.getId(),user2.getId());
+        userStorage.deleteFriend(user.getId(), user2.getId());
         Assertions.assertTrue(userStorage.findFriends(user.getId()).isEmpty());
     }
 
     @Test
     public void testDeleteFriendConfirmed() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
-        User user2 = userStorage.add(createUser("emailOther@mail.ru","login228"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
+        User user2 = userStorage.add(createUser("emailOther@mail.ru", "login228"));
 
         userStorage.addFriend(user.getId(), user2.getId());
         userStorage.addFriend(user2.getId(), user.getId());
-        userStorage.deleteFriend(user.getId(),user2.getId());
+        userStorage.deleteFriend(user.getId(), user2.getId());
         Assertions.assertEquals(FriendshipStatus.UNCONFIRMED, userStorage.findFriends(user2.getId()).get(user.getId()));
     }
 
     @Test
     public void testDeleteFriendWithoutFriendRequest() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
-        User user2 = userStorage.add(createUser("emailOther@mail.ru","login228"));
-        userStorage.deleteFriend(user.getId(),user2.getId());
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
+        User user2 = userStorage.add(createUser("emailOther@mail.ru", "login228"));
+        userStorage.deleteFriend(user.getId(), user2.getId());
 
         Assertions.assertTrue(userStorage.findFriends(user.getId()).isEmpty());
     }
@@ -196,7 +195,7 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testAddLike() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
         Film newFilm = filmStorage.add(createFilm("film"));
         filmStorage.addLike(newFilm.getId(), user.getId());
 
@@ -205,7 +204,7 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testAddLikeTwoTimesSameUser() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
         Film newFilm = filmStorage.add(createFilm("film"));
         filmStorage.addLike(newFilm.getId(), user.getId());
         filmStorage.addLike(newFilm.getId(), user.getId());
@@ -215,7 +214,7 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testDeleteLike() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
         Film newFilm = filmStorage.add(createFilm("film"));
         filmStorage.addLike(newFilm.getId(), user.getId());
         filmStorage.deleteLike(newFilm.getId(), user.getId());
@@ -225,7 +224,7 @@ class FilmoRateApplicationTests {
 
     @Test
     public void testDeleteLikeTwoTimesSameUser() {
-        User user = userStorage.add(createUser("email@mail.ru","login"));
+        User user = userStorage.add(createUser("email@mail.ru", "login"));
         Film newFilm = filmStorage.add(createFilm("film"));
         filmStorage.addLike(newFilm.getId(), user.getId());
         filmStorage.deleteLike(newFilm.getId(), user.getId());

@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 public class Film {
     public static final int MAX_DESCRIPTION_LENGTH = 200;
-    public static final LocalDate FIRST_FILM_RELEASE_DATE = LocalDate.of(1895,12,28);
+    public static final LocalDate FIRST_FILM_RELEASE_DATE = LocalDate.of(1895, 12, 28);
     public static final int MIN_FILM_DURATION = 1;
 
     private Long id;

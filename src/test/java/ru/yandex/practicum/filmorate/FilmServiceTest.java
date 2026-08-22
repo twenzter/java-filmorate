@@ -20,7 +20,7 @@ import java.util.*;
 public class FilmServiceTest {
     private final InMemoryFilmStorage filmStorage = new InMemoryFilmStorage();
     private final InMemoryUserStorage userStorage = new InMemoryUserStorage();
-    private final UserService userService =  new UserService(userStorage);
+    private final UserService userService = new UserService(userStorage);
     private final FilmService filmService = new FilmService(filmStorage, userStorage);
     private NewFilmRequest film;
     private NewUserRequest user;
@@ -31,7 +31,7 @@ public class FilmServiceTest {
         film.setName("film");
         film.setDuration(123);
         film.setDescription("The film");
-        film.setReleaseDate(LocalDate.of(1999,12,1));
+        film.setReleaseDate(LocalDate.of(1999, 12, 1));
         NewMPARequest mpaRequest = new NewMPARequest();
         mpaRequest.setId(1L);
         film.setMpa(mpaRequest);
@@ -40,7 +40,7 @@ public class FilmServiceTest {
         user = new NewUserRequest();
         user.setEmail("email@mail.ru");
         user.setLogin("login");
-        user.setBirthday(LocalDate.of(1999,2,1));
+        user.setBirthday(LocalDate.of(1999, 2, 1));
         userStorage.clear();
         userService.create(user);
     }
@@ -58,9 +58,9 @@ public class FilmServiceTest {
         film1.setName("film");
         film1.setDuration(123);
         film1.setDescription("The film");
-        film1.setReleaseDate(LocalDate.of(1999,12,1));
+        film1.setReleaseDate(LocalDate.of(1999, 12, 1));
         film1.setMpa(MPA.G);
-        Assertions.assertEquals(FilmMapper.mapToFilmDto(film1),filmService.create(film));
+        Assertions.assertEquals(FilmMapper.mapToFilmDto(film1), filmService.create(film));
     }
 
 
@@ -73,7 +73,7 @@ public class FilmServiceTest {
         film1.setName("film");
         film1.setDuration(123);
         film1.setDescription("1".repeat(200));
-        film1.setReleaseDate(LocalDate.of(1999,12,1));
+        film1.setReleaseDate(LocalDate.of(1999, 12, 1));
         film1.setMpa(MPA.G);
         Assertions.assertEquals(FilmMapper.mapToFilmDto(film1), filmService.create(film));
     }
@@ -87,7 +87,7 @@ public class FilmServiceTest {
         film1.setName("film");
         film1.setDuration(123);
         film1.setDescription("1".repeat(100));
-        film1.setReleaseDate(LocalDate.of(1999,12,1));
+        film1.setReleaseDate(LocalDate.of(1999, 12, 1));
         film1.setMpa(MPA.G);
         Assertions.assertEquals(FilmMapper.mapToFilmDto(film1), filmService.create(film));
     }
@@ -95,7 +95,7 @@ public class FilmServiceTest {
 
     @Test
     public void postFilmBeforeThanFirstFilmReleaseDate() {
-        film.setReleaseDate(LocalDate.of(1888,12,12));
+        film.setReleaseDate(LocalDate.of(1888, 12, 12));
         try {
             filmService.create(film);
             Assertions.fail();
@@ -106,28 +106,28 @@ public class FilmServiceTest {
 
     @Test
     public void postFilmOnFirstFilmReleaseDate() {
-        film.setReleaseDate(LocalDate.of(1895,12,28));
+        film.setReleaseDate(LocalDate.of(1895, 12, 28));
 
         Film film1 = new Film();
         film1.setId(1L);
         film1.setName("film");
         film1.setDuration(123);
         film1.setDescription("The film");
-        film1.setReleaseDate(LocalDate.of(1895,12,28));
+        film1.setReleaseDate(LocalDate.of(1895, 12, 28));
         film1.setMpa(MPA.G);
         Assertions.assertEquals(FilmMapper.mapToFilmDto(film1), filmService.create(film));
     }
 
     @Test
     public void postFilmAfterFilmReleaseDate() {
-        film.setReleaseDate(LocalDate.of(1900,3,30));
+        film.setReleaseDate(LocalDate.of(1900, 3, 30));
 
         Film film1 = new Film();
         film1.setId(1L);
         film1.setName("film");
         film1.setDuration(123);
         film1.setDescription("The film");
-        film1.setReleaseDate(LocalDate.of(1900,3,30));
+        film1.setReleaseDate(LocalDate.of(1900, 3, 30));
         film1.setMpa(MPA.G);
         Assertions.assertEquals(FilmMapper.mapToFilmDto(film1), filmService.create(film));
     }
@@ -141,7 +141,7 @@ public class FilmServiceTest {
         film1.setName("film");
         film1.setDuration(120);
         film1.setDescription("The film");
-        film1.setReleaseDate(LocalDate.of(1999,12,1));
+        film1.setReleaseDate(LocalDate.of(1999, 12, 1));
         film1.setMpa(MPA.G);
         Assertions.assertEquals(FilmMapper.mapToFilmDto(film1), filmService.create(film));
     }
@@ -155,16 +155,16 @@ public class FilmServiceTest {
         film2.setName("Kill Bill");
         film2.setDuration(10);
         film2.setDescription("The series");
-        film2.setReleaseDate(LocalDate.of(2004,5,3));
+        film2.setReleaseDate(LocalDate.of(2004, 5, 3));
 
         Film film4 = new Film();
         film4.setId(1L);
         film4.setName("Kill Bill");
         film4.setDuration(10);
         film4.setDescription("The series");
-        film4.setReleaseDate(LocalDate.of(2004,5,3));
+        film4.setReleaseDate(LocalDate.of(2004, 5, 3));
         film4.setMpa(MPA.G);
-        Assertions.assertEquals(FilmMapper.mapToFilmDto(film4),filmService.update(film2));
+        Assertions.assertEquals(FilmMapper.mapToFilmDto(film4), filmService.update(film2));
     }
 
 
@@ -172,13 +172,13 @@ public class FilmServiceTest {
     public void updateFilmWithInvalidId() {
         film.setDuration(123);
         film.setDescription("The film");
-        film.setReleaseDate(LocalDate.of(1999,12,1));
+        film.setReleaseDate(LocalDate.of(1999, 12, 1));
         filmService.create(film);
 
         UpdateFilmRequest film2 = new UpdateFilmRequest();
         film2.setId(2L);
         film2.setName("Kill Bill");
-        film2.setReleaseDate(LocalDate.of(2004,5,3));
+        film2.setReleaseDate(LocalDate.of(2004, 5, 3));
 
         try {
             filmService.update(film2);
@@ -197,10 +197,10 @@ public class FilmServiceTest {
         film.setName("film");
         film.setDuration(123);
         film.setDescription("The film");
-        film.setReleaseDate(LocalDate.of(1999,12,1));
+        film.setReleaseDate(LocalDate.of(1999, 12, 1));
         film.setMpa(MPA.G);
 
-        Assertions.assertEquals(FilmMapper.mapToFilmDto(film) ,filmService.findFilm(1L));
+        Assertions.assertEquals(FilmMapper.mapToFilmDto(film), filmService.findFilm(1L));
     }
 
     @Test
@@ -223,21 +223,21 @@ public class FilmServiceTest {
         film1.setName("film");
         film1.setDuration(123);
         film1.setDescription("The film");
-        film1.setReleaseDate(LocalDate.of(1999,12,1));
+        film1.setReleaseDate(LocalDate.of(1999, 12, 1));
         film1.setMpa(MPA.G);
 
         Set<Long> setLikesToFilm = new HashSet<>();
         setLikesToFilm.add(1L);
         film1.setLikes(setLikesToFilm);
 
-        Assertions.assertEquals(FilmMapper.mapToFilmDto(film1), filmService.addLikeToFilm(1L,1L));
+        Assertions.assertEquals(FilmMapper.mapToFilmDto(film1), filmService.addLikeToFilm(1L, 1L));
     }
 
     @Test
     public void addLikeToFilmByIdAndUnknownUserId() {
         filmService.create(film);
         try {
-            filmService.addLikeToFilm(1L,2L);
+            filmService.addLikeToFilm(1L, 2L);
             Assertions.fail();
         } catch (NotFoundException e) {
             Assertions.assertEquals("User with id 2 hasn't been found", e.getDescription());
@@ -247,12 +247,12 @@ public class FilmServiceTest {
     @Test
     public void addLikeToFilmAgainByIdAndSameUserId() {
         filmService.create(film);
-        filmService.addLikeToFilm(1L,1L);
+        filmService.addLikeToFilm(1L, 1L);
         try {
-            filmService.addLikeToFilm(1L,1L);
+            filmService.addLikeToFilm(1L, 1L);
             Assertions.fail();
         } catch (ValidationException e) {
-            Assertions.assertEquals("User already liked this film",e.getDescription());
+            Assertions.assertEquals("User already liked this film", e.getDescription());
         }
 
     }
@@ -260,15 +260,15 @@ public class FilmServiceTest {
     @Test
     public void deleteLikeFromFilmByIdAndUserId() {
         filmService.create(film);
-        filmService.addLikeToFilm(1L,1L);
-        filmService.deleteLikeFromFilm(1L,1L);
+        filmService.addLikeToFilm(1L, 1L);
+        filmService.deleteLikeFromFilm(1L, 1L);
     }
 
     @Test
     public void deleteLikeFromFilmWithoutLikes() {
         filmService.create(film);
         try {
-            filmService.deleteLikeFromFilm(1L,1L);
+            filmService.deleteLikeFromFilm(1L, 1L);
             Assertions.fail();
         } catch (NotFoundException e) {
             Assertions.assertEquals("User hasn't liked this film", e.getDescription());
@@ -280,7 +280,7 @@ public class FilmServiceTest {
         filmService.create(film);
         filmService.create(film);
         filmService.create(film);
-        filmService.addLikeToFilm(3L,1L);
+        filmService.addLikeToFilm(3L, 1L);
 
         List<FilmDto> set = new ArrayList<>();
         set.add(filmService.findFilm(3L));
@@ -292,7 +292,7 @@ public class FilmServiceTest {
         filmService.create(film);
         filmService.create(film);
         filmService.create(film);
-        filmService.addLikeToFilm(3L,1L);
+        filmService.addLikeToFilm(3L, 1L);
 
         List<FilmDto> set = new ArrayList<>();
         set.add(filmService.findFilm(3L));

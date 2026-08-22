@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.model.MPA;
 public class MPAMapper {
     public static MPA mapToMpa(NewMPARequest newMPA) {
         return MPA.fromId(newMPA.getId()).orElseThrow(() -> new
-                        NotFoundException("id", "Mpa with id " + newMPA.getId() + " hasn't been found"));
+                NotFoundException("id", "Mpa with id " + newMPA.getId() + " hasn't been found"));
     }
 
     public static MPADto mapToMPADto(MPA mpa) {

@@ -27,7 +27,7 @@ public class UserServiceTest {
         user = new NewUserRequest();
         user.setEmail("email@mail.ru");
         user.setLogin("login");
-        user.setBirthday(LocalDate.of(1999,2,1));
+        user.setBirthday(LocalDate.of(1999, 2, 1));
         userStorage.clear();
     }
 
@@ -44,8 +44,8 @@ public class UserServiceTest {
         userDto.setEmail("email@mail.ru");
         userDto.setLogin("login");
         userDto.setName("login");
-        userDto.setBirthday(LocalDate.of(1999,02,01));
-        Assertions.assertEquals(userDto,userService.create(user));
+        userDto.setBirthday(LocalDate.of(1999, 02, 01));
+        Assertions.assertEquals(userDto, userService.create(user));
     }
 
     @Test
@@ -53,13 +53,13 @@ public class UserServiceTest {
         NewUserRequest user1 = new NewUserRequest();
         user1.setEmail("login1@mail.ru");
         user1.setLogin("login1");
-        user1.setBirthday(LocalDate.of(1999,2,3));
+        user1.setBirthday(LocalDate.of(1999, 2, 3));
         userService.create(user1);
 
         NewUserRequest user2 = new NewUserRequest();
         user2.setEmail("login2@mail.ru");
         user2.setLogin("login2");
-        user2.setBirthday(LocalDate.of(1979,7,3));
+        user2.setBirthday(LocalDate.of(1979, 7, 3));
         userService.create(user2);
         Assertions.assertEquals(2, userService.findAll().size());
     }
@@ -97,7 +97,7 @@ public class UserServiceTest {
         userDto.setLogin("login");
         userDto.setName("login");
         userDto.setBirthday(LocalDate.now());
-        Assertions.assertEquals(userDto,userService.create(user));
+        Assertions.assertEquals(userDto, userService.create(user));
     }
 
     @Test
@@ -110,7 +110,7 @@ public class UserServiceTest {
         userDto.setLogin("login");
         userDto.setName("login");
         userDto.setBirthday(LocalDate.now().minusDays(100));
-        Assertions.assertEquals(userDto,userService.create(user));
+        Assertions.assertEquals(userDto, userService.create(user));
     }
 
     @Test
@@ -145,15 +145,15 @@ public class UserServiceTest {
         user2.setEmail("email2@mail.ru");
         user2.setLogin("login2");
         user2.setName("name2");
-        user2.setBirthday(LocalDate.of(2000,2,1));
+        user2.setBirthday(LocalDate.of(2000, 2, 1));
 
         UserDto userDto = new UserDto();
         userDto.setId(1L);
         userDto.setEmail("email2@mail.ru");
         userDto.setLogin("login2");
         userDto.setName("name2");
-        userDto.setBirthday(LocalDate.of(2000,2,1));
-        Assertions.assertEquals(userDto,userService.update(user2));
+        userDto.setBirthday(LocalDate.of(2000, 2, 1));
+        Assertions.assertEquals(userDto, userService.update(user2));
     }
 
     @Test
@@ -164,7 +164,7 @@ public class UserServiceTest {
         user2.setId(2L);
         user2.setLogin("login2");
         user2.setName("name2");
-        user2.setBirthday(LocalDate.of(2000,2,1));
+        user2.setBirthday(LocalDate.of(2000, 2, 1));
 
         try {
             userService.update(user2);
@@ -182,7 +182,7 @@ public class UserServiceTest {
         userDto.setEmail("email@mail.ru");
         userDto.setLogin("login");
         userDto.setName("login");
-        userDto.setBirthday(LocalDate.of(1999,02,01));
+        userDto.setBirthday(LocalDate.of(1999, 02, 01));
 
         Assertions.assertEquals(userDto, userService.findUser(1L));
     }
@@ -208,21 +208,21 @@ public class UserServiceTest {
         userDto.setEmail("email@mail.ru");
         userDto.setLogin("login");
         userDto.setName("login");
-        userDto.setBirthday(LocalDate.of(1999,02,01));
+        userDto.setBirthday(LocalDate.of(1999, 02, 01));
 
-        Assertions.assertEquals(Set.of(userDto), userService.addFriend(1L,2L));
+        Assertions.assertEquals(Set.of(userDto), userService.addFriend(1L, 2L));
     }
 
     @Test
     public void addFriendToUserAgainByIdAndSameFriendId() {
         userService.create(user);
         userService.create(user);
-        userService.addFriend(1L,2L);
+        userService.addFriend(1L, 2L);
         try {
-            userService.addFriend(1L,2L);
+            userService.addFriend(1L, 2L);
             Assertions.fail();
         } catch (ValidationException e) {
-            Assertions.assertEquals("User with friendId is already add to friends",e.getDescription());
+            Assertions.assertEquals("User with friendId is already add to friends", e.getDescription());
         }
 
     }
@@ -231,8 +231,8 @@ public class UserServiceTest {
     public void deleteFriendToUserByIdAndFriendId() {
         userService.create(user);
         userService.create(user);
-        userService.addFriend(1L,2L);
-        userService.deleteFriend(1L,2L);
+        userService.addFriend(1L, 2L);
+        userService.deleteFriend(1L, 2L);
     }
 
     @Test
@@ -240,31 +240,31 @@ public class UserServiceTest {
         NewUserRequest user1 = new NewUserRequest();
         user1.setEmail("email@mail.ru");
         user1.setLogin("login");
-        user1.setBirthday(LocalDate.of(1999,2,1));
+        user1.setBirthday(LocalDate.of(1999, 2, 1));
         NewUserRequest user2 = new NewUserRequest();
         user2.setEmail("email@mail.ru");
         user2.setLogin("login");
-        user2.setBirthday(LocalDate.of(1999,2,1));
+        user2.setBirthday(LocalDate.of(1999, 2, 1));
         NewUserRequest user3 = new NewUserRequest();
         user3.setEmail("email@mail.ru");
         user3.setLogin("login");
-        user3.setBirthday(LocalDate.of(1999,2,1));
+        user3.setBirthday(LocalDate.of(1999, 2, 1));
 
         userService.create(user);
         userService.create(user1);
         userService.create(user2);
         userService.create(user3);
 
-        userService.addFriend(1L,2L);
-        userService.addFriend(1L,4L);
-        userService.addFriend(2L,4L);
-        userService.addFriend(2L,3L);
-        userService.addFriend(4L,3L);
+        userService.addFriend(1L, 2L);
+        userService.addFriend(1L, 4L);
+        userService.addFriend(2L, 4L);
+        userService.addFriend(2L, 3L);
+        userService.addFriend(4L, 3L);
 
         Set<User> set = new HashSet<>();
         set.add(userStorage.findOne(3L).get());
 
-        Assertions.assertEquals(userService.getCommonFriends(2L,4L),
+        Assertions.assertEquals(userService.getCommonFriends(2L, 4L),
                 set.stream().map(UserMapper::mapToUserDto).collect(Collectors.toSet()));
     }
 }

@@ -26,7 +26,7 @@ public class FilmDBStorage implements FilmStorage {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("films")
                 .usingGeneratedKeyColumns("id");
-        HashMap<String,Object> parameters = new HashMap<>();
+        HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("name", film.getName());
         parameters.put("description", film.getDescription());
         parameters.put("release_date", film.getReleaseDate());
@@ -79,7 +79,7 @@ public class FilmDBStorage implements FilmStorage {
     public Collection<Film> findAll() {
         String sql = "SELECT * FROM films";
         List<Film> films = jdbcTemplate.query(sql, new FilmRowMapper());
-        for (Film film: films) {
+        for (Film film : films) {
             film.setGenres(getFilmGenresById(film.getId()));
             film.setLikes(getFilmLikesById(film.getId()));
         }
@@ -121,9 +121,9 @@ public class FilmDBStorage implements FilmStorage {
         String sqlUpdate = "INSERT INTO films_genres (film_id, genre_id) VALUES (?, ?)";
         jdbcTemplate.batchUpdate(sqlUpdate,
                 genres, genres.size(), (ps, genre) -> {
-            ps.setLong(1, film.getId());
-            ps.setLong(2, genre.getId());
-        });
+                    ps.setLong(1, film.getId());
+                    ps.setLong(2, genre.getId());
+                });
     }
 
 

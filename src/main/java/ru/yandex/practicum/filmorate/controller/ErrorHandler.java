@@ -26,24 +26,24 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String,String> handleValidationException(ValidationException e) {
-        Map<String,String> error = new HashMap<>();
+    public Map<String, String> handleValidationException(ValidationException e) {
+        Map<String, String> error = new HashMap<>();
         error.put(e.getParameter(), e.getDescription());
         return error;
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String,String> handleNotFoundException(NotFoundException e) {
-        Map<String,String> error = new HashMap<>();
+    public Map<String, String> handleNotFoundException(NotFoundException e) {
+        Map<String, String> error = new HashMap<>();
         error.put(e.getParameter(), e.getDescription());
         return error;
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String,String> handleThrowable(Throwable e) {
-        Map<String,String> error = new HashMap<>();
+    public Map<String, String> handleThrowable(Throwable e) {
+        Map<String, String> error = new HashMap<>();
         error.put("error", e.getMessage());
         return error;
     }

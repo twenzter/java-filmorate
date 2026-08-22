@@ -24,7 +24,7 @@ public class UserDBStorage implements UserStorage {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(jdbcTemplate)
                 .withTableName("users")
                 .usingGeneratedKeyColumns("id");
-        HashMap<String,Object> parameters = new HashMap<>();
+        HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("email", user.getEmail());
         parameters.put("login", user.getLogin());
         parameters.put("name", user.getName());
@@ -72,7 +72,7 @@ public class UserDBStorage implements UserStorage {
     public Collection<User> findAll() {
         String sql = "SELECT * FROM users";
         List<User> users = jdbcTemplate.query(sql, new UserRowMapper());
-        for (User user: users) {
+        for (User user : users) {
             user.setFriends(findFriends(user.getId()));
         }
         return users;
@@ -82,7 +82,7 @@ public class UserDBStorage implements UserStorage {
     public Map<Long, FriendshipStatus> addFriend(Long id, Long friendId) {
         String sqlCheckStatus = "SELECT friendship_status_id FROM users_friends WHERE user_id = ? AND friend_id = ?";
         List<Long> friendStatus = jdbcTemplate.query(sqlCheckStatus,
-                (rs,rowNum) -> rs.getLong("friendship_status_id"), friendId, id);
+                (rs, rowNum) -> rs.getLong("friendship_status_id"), friendId, id);
 
         Long status = FriendshipStatus.UNCONFIRMED.getId();
         if (!friendStatus.isEmpty()) {

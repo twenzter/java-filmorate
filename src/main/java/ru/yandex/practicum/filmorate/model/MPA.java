@@ -8,7 +8,7 @@ import java.util.Optional;
 @Getter
 @RequiredArgsConstructor
 public enum MPA {
-    G(1L,"G"),
+    G(1L, "G"),
     PG(2L, "PG"),
     PG13(3L, "PG-13"),
     R(4L, "R"),
@@ -18,7 +18,7 @@ public enum MPA {
     private final String name;
 
     public static Optional<MPA> fromId(Long id) {
-        for (MPA mpa: values()) {
+        for (MPA mpa : values()) {
             if (mpa.getId().equals(id)) {
                 return Optional.of(mpa);
             }

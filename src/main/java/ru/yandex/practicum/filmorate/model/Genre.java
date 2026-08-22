@@ -19,7 +19,7 @@ public enum Genre {
     private final String name;
 
     public static Optional<Genre> fromId(Long id) {
-        for (Genre genre: values()) {
+        for (Genre genre : values()) {
             if (genre.getId().equals(id)) {
                 return Optional.of(genre);
             }

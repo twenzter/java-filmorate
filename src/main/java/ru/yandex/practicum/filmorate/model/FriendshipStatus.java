@@ -15,7 +15,7 @@ public enum FriendshipStatus {
     private final String name;
 
     public static Optional<FriendshipStatus> fromId(Long id) {
-        for (FriendshipStatus friendshipStatus: values()) {
+        for (FriendshipStatus friendshipStatus : values()) {
             if (friendshipStatus.getId().equals(id)) {
                 return Optional.of(friendshipStatus);
             }
