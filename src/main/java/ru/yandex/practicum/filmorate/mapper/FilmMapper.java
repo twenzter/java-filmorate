@@ -50,6 +50,7 @@ public class FilmMapper {
         } else {
             filmDto.setGenres(new LinkedHashSet<>());
         }
+        filmDto.setLikes((long) film.getLikes().size());
 
         return filmDto;
     }

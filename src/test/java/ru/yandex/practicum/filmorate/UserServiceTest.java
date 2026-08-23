@@ -45,6 +45,7 @@ public class UserServiceTest {
         userDto.setLogin("login");
         userDto.setName("login");
         userDto.setBirthday(LocalDate.of(1999, 02, 01));
+        userDto.setFriends(0L);
         Assertions.assertEquals(userDto, userService.create(user));
     }
 
@@ -97,6 +98,7 @@ public class UserServiceTest {
         userDto.setLogin("login");
         userDto.setName("login");
         userDto.setBirthday(LocalDate.now());
+        userDto.setFriends(0L);
         Assertions.assertEquals(userDto, userService.create(user));
     }
 
@@ -110,6 +112,7 @@ public class UserServiceTest {
         userDto.setLogin("login");
         userDto.setName("login");
         userDto.setBirthday(LocalDate.now().minusDays(100));
+        userDto.setFriends(0L);
         Assertions.assertEquals(userDto, userService.create(user));
     }
 
@@ -153,6 +156,7 @@ public class UserServiceTest {
         userDto.setLogin("login2");
         userDto.setName("name2");
         userDto.setBirthday(LocalDate.of(2000, 2, 1));
+        userDto.setFriends(0L);
         Assertions.assertEquals(userDto, userService.update(user2));
     }
 
@@ -183,7 +187,7 @@ public class UserServiceTest {
         userDto.setLogin("login");
         userDto.setName("login");
         userDto.setBirthday(LocalDate.of(1999, 02, 01));
-
+        userDto.setFriends(0L);
         Assertions.assertEquals(userDto, userService.findUser(1L));
     }
 
@@ -209,7 +213,7 @@ public class UserServiceTest {
         userDto.setLogin("login");
         userDto.setName("login");
         userDto.setBirthday(LocalDate.of(1999, 02, 01));
-
+        userDto.setFriends(0L);
         Assertions.assertEquals(Set.of(userDto), userService.addFriend(1L, 2L));
     }
 

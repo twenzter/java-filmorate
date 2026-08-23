@@ -28,4 +28,5 @@ public class FilmDto {
     @NotNull(message = "Film age limit can't be empty")
     private MPADto mpa;
     private Set<GenreDto> genres;
+    private Long likes;
 }

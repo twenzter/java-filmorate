@@ -20,4 +20,5 @@ public class UserDto {
     private String name;
     @NotNull(message = "User birthday can't be empty")
     private LocalDate birthday;
+    private Long friends;
 }
