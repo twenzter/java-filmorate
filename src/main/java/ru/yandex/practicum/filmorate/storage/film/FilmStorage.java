@@ -3,18 +3,20 @@ package ru.yandex.practicum.filmorate.storage.film;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.Optional;
 
 public interface FilmStorage {
-    void clear();
+    Film add(Film film);
 
-    Film get(Long id);
+    Film update(Film film);
 
-    boolean containsKey(Long id);
+    void delete(Long id);
 
-    void put(Long id,Film film);
+    Optional<Film> findOne(Long id);
 
-    Set<Long> keySet();
+    Collection<Film> findAll();
 
-    Collection<Film> values();
+    Film addLike(Long id, Long userId);
+
+    void deleteLike(Long id, Long userId);
 }

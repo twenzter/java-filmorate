@@ -1,21 +1,16 @@
-package ru.yandex.practicum.filmorate.model;
+package ru.yandex.practicum.filmorate.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
-    public static final String SPACE_SYMBOL = " ";
-
+public class UserDto {
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
     @NotBlank(message = "User email can't be empty")
     @Email(message = "User email must be on special format")
@@ -25,5 +20,5 @@ public class User {
     private String name;
     @NotNull(message = "User birthday can't be empty")
     private LocalDate birthday;
-    private Map<Long, FriendshipStatus> friends = new HashMap<>();
+    private Long friends;
 }
